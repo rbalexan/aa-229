@@ -1,0 +1,112 @@
+\documentclass[conference]{IEEEtran}
+
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\usepackage{booktabs} %@{}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usepackage[per-mode=symbol,detect-all]{siunitx}
+\usepackage{cleveref} %\Cref{} vs. \cref{}
+\usepackage[protrusion=true,expansion=true]{microtype}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+
+\title{\LARGE \textbf{Planning for Autonomous Driving using POMCPOW} \\
+\thanks{Ross Alexander is supported by a Stanford Graduate Fellowship (SGF) in Science and Engineering.}}
+
+
+\author{\IEEEauthorblockN{  Ross Alexander}
+\IEEEauthorblockA{\textit{  Department of Aeronautics and Astronautics} \\
+\textit{                    Stanford University} \\
+                            Stanford, CA 94305 \\
+                            rbalexan@stanford.edu}} % or ORCID
+
+
+\maketitle
+
+\begin{abstract}
+    %
+\end{abstract}
+
+% \begin{IEEEkeywords}
+% component, formatting, style, styling, insert
+% \end{IEEEkeywords}
+
+\section{Introduction}
+
+% \textbf{What is the problem?}
+% \textbf{Why is it interesting and important?}
+% \textbf{Why is it hard? (E.g., why do naive approaches fail?)}
+% \textbf{Why hasn't it been solved before? (Or, what's wrong with previous proposed solutions? How does mine differ?)}
+%\textbf{What are the key components of my approach and results? Also include any specific limitations.}
+%\textbf{Summary of the major contributions in bullet form, mentioning in which sections they can be found. This material doubles as an outline of the rest of the paper, saving space and eliminating redundancy.}
+% \cite{}. 
+
+\section{Background}
+
+%A principled and general framework for planning under uncertainty is the partially-observable Markov decision process (POMDP). A POMDP is typically defined by the tuple $\langle \mathcal{S},\mathcal{A}, \mathcal{Z}, \mathcal{T}, \mathcal{R}, \mathcal{O}, \gamma \rangle$, which, similar to the MDP, represents the state space, action space, observation space, transition model, reward model, observation model, and discount factor, respectively. Again the agent occupies a state $s \in \mathcal{S}$, can take actions $a \in \mathcal{A}$, transitions to a state $s' \in \mathcal{S}$ after taking action $a$ with probability $Pr(s' \mid s, a) = \mathcal{T}(s,a,s')$, receives a real-valued reward $r = \mathcal{R}(s,a)$, and receives an observation $o \in \mathcal{Z}$ with probability $Pr(o\mid s', a) = \mathcal{O}(o, s',a)$. 
+\cite{Bouton2019Cooperation-AwareTraffic}
+
+\section{Proposed Approach}
+
+Proposed Approach
+
+\section{Implementation}
+
+Implementation
+
+\section{Experiments}
+
+Experiments
+
+\section{Results and Discussion}
+
+Results and Discussion
+
+\section{Conclusion}
+
+%\textbf{In general a short summarizing paragraph will do, and under no circumstances should the paragraph simply repeat material from the Abstract or Introduction. In some cases it's possible to now make the original claims more concrete, e.g., by referring to quantitative performance results.}
+
+\section{Future Work}
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+\end{document}
+
+%\begin{table}[htbp]
+%    \caption{Table Type Styles}
+%    \begin{center}
+%        \begin{tabular}{|c|c|c|c|}
+%            \hline
+%            \textbf{Table}&\multicolumn{3}{|c|}{\textbf{Table Column Head}} \\
+%            \cline{2-4} 
+%            \textbf{Head} & \textbf{\textit{Table column subhead}}& \textbf{\textit{Subhead}}& \textbf{\textit{Subhead}} \\
+%            \hline
+%            copy& More table copy$^{\mathrm{a}}$& &  \\
+%            \hline
+%            \multicolumn{4}{l}{$^{\mathrm{a}}$Sample of a Table footnote.}
+%        \end{tabular}
+%        \label{tab1}
+%    \end{center}
+%\end{table}
+
+%\begin{figure}[htbp]
+%    \centerline{}%\includegraphics{fig1.png}}
+%    \caption{Example of a figure caption.}
+%    \label{fig}
+%\end{figure}
+
+%Please use ``soft'' (e.g., \verb|\eqref{Eq}|) cross references; don't use the \verb|{eqnarray}| equation environment. Use \verb|{align}| or \verb|{IEEEeqnarray}| instead. Do not use \verb|\nonumber| inside the \verb|{array}| environment. The abbreviation ``i.e.'' means ``that is'', and the abbreviation ``e.g.'' means ``for example''.
