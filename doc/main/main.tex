@@ -131,9 +131,7 @@ The pedestrian evolves using a simple constant velocity model where the velocity
     s_t &= s_{t-1} + v_t \Delta t 
 \end{align}
 
-\subsubsection{Reward model} Rewards are discounted using a discount factor $\gamma = 0.9$, which encourages the agent to seek immediate rewards over future rewards.  
-
-
+\subsubsection{Reward model} Rewards are discounted using a discount factor $\gamma = 0.9$, which encourages the agent to seek immediate rewards over future rewards. There is a reward of 1 for reaching the goal state and a collision penalty of -10. % could discuss reward engineering
 
 \subsection{POMDP Solvers}
 
@@ -158,13 +156,30 @@ Experiments
 action cost = 0
 collision cost = -10
 gamma = 0.9
-pedestrian velocity noise = 0.0
+pedestrian velocity noise = 1.0
 
-\begin{figure}[htbp]
-    \centerline{\includegraphics[width=0.95\linewidth]{src/plots/qmdp_0.00001_noise_1.0.png}}
-    \caption{}
+
+\begin{figure*}[htbp]
+    \centerline{\textbf{QMDP Policies}}
+    \\
+    \centerline{
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_0_01_no_labels.png}
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_0_5_no_labels.png}
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_1_0_no_labels.png} \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_2_0_no_labels.png}
+    }
+    \\ 
+    ~
+    \\
+     \centerline{\textbf{SARSOP Policies}}
+    \\
+    \centerline{
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_0_01_no_labels.png}
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_0_5_no_labels.png}
+        \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_1_0_no_labels.png} \includegraphics[width=0.25\linewidth]{src/plots/qmdp_0_00001_noise_2_0_no_labels.png}
+    }
+    \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. The ego vehicle is initialized at $5 ~\si{\meter\per\second}$ and the pedestrian is initialized at $1 ~\si{\meter\per\second}$. From left to right, the standard deviation of the sensor's position and velocity estimates increases ($\sigma = 0~ \si{\meter}$, $\sigma = 0.5~ \si{\meter}$, $\sigma = 1~ \si{\meter}$, $\sigma = 2~ \si{\meter}$), demonstrating the POMDP's robustness to uncertainty.}
     \label{fig:qmdp}
-\end{figure}
+\end{figure*}
 
 \section{Results}
 \label{sec:results}
