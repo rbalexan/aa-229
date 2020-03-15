@@ -157,22 +157,22 @@ SARSOP, which stands for Successive Approximation of the Reachable Space under O
 \section{Experiments \& Results}
 \label{sec:experiments-results}
 
-We formulate the POMDP using \texttt{AutomotivePOMDPs.jl}\footnote{\texttt{https://github.com/sisl/AutomotivePOMDPs.jl}}, which is built on \texttt{POMDPs.jl} \cite{Egorov2017POMDPs.jl:Uncertainty}.
+We formulate the occluded crosswalk POMDP using a Julia package called \texttt{AutomotivePOMDPs.jl}\footnote{\texttt{https://github.com/sisl/AutomotivePOMDPs.jl}}, which is built on \texttt{POMDPs.jl} \cite{Egorov2017POMDPs.jl:Uncertainty}.
+
+A brief comparison of QMDP and SARSOP policies was conducted to demonstrate their differences. We analyzed the case of no sensor noise and examined the resulting policies, which are represented in \Cref{fig:qmdp_sarsop_1}\footnote{The SARSOP policy plots admittedly look different than the QMDP policy plots -- the plotting routines for these are different and I am still trying to fix them so they achieve identical behavior. The notional representation, however, is the same.}. The ego vehicle is initialized at $5 ~\si{\meter\per\second}$ and the pedestrian is initialized at $1 ~\si{\meter\per\second}$.
 
 \begin{figure}[tbph]
     \centerline{
-        \includegraphics[width=0.5\linewidth]{src/plots/qmdp_0_00001_noise_0_01_no_labels.png}
-        \includegraphics[width=0.5\linewidth]{src/plots/sarsop_0_01_1000_noise_0_01_no_labels.png}
+        \includegraphics[width=0.5\linewidth]{src/plots/qmdp_0_00001_noise_0_01.png}
+        \includegraphics[width=0.5\linewidth]{src/plots/sarsop_0_01_1000_noise_0_01.png}
     }
-    \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. The horizontal axis represents the position of the ego vehicle in the roadway in $\si{\meter}$, with the right edge of the plot representing the location of the crosswalk; the vertical axis represents the position of the pedestrian in the crosswalk in $\si{\meter}$.  There is no error in the sensing of the pedestrian's position and velocity.}
+    \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. There is no error in the sensing of the pedestrian's position and velocity.}
     \label{fig:qmdp_sarsop_1}
 \end{figure}
 
-A brief comparison of QMDP and SARSOP policies was conducted to demonstrate their differences. We analyzed the case of no sensor noise and examined the resulting policies, which is represented in \Cref{fig:qmdp_sarsop_1}. The ego vehicle is initialized at $5 ~\si{\meter\per\second}$ and the pedestrian is initialized at $1 ~\si{\meter\per\second}$.
+The policies exhibit similar behavior, though the QMDP policy is more aggressive throughout, with aggressive braking for most of the ego vehicle's positions. The SARSOP policy appears similar, though the policy oddly switches to less aggressive braking as the ego approaches the pedestrian. This may be due to the $1000 ~\si{\second}$ time-out termination condition we set for SARSOP. The policies are topologically similar to those presented in \cite{Bouton2018ScalableDriving}.
 
-We analyzed the effect of sensor uncertainty in each POMDP solver to see the robustness to uncertainty in the environment and the sensors.
-
-There is some reason the policies look different for SARSOP, but I think it's a bug in the code.
+We also, analyzed the effect of sensor uncertainty in each POMDP solver to examine the robustness to uncertainty in the environment and the sensors, which is shown in \Cref{fig:qmdp_sarsop_2}.
 
 \begin{figure*}[htbp]
     \centerline{\textbf{QMDP Policies}}
