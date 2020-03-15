@@ -196,16 +196,16 @@ As the sensor uncertainty grows, the QMDP policy evolves to maintaining accelera
 
 The final experiments examine a real-world case. Following the choices of the authors in \cite{Bouton2018ScalableDriving}, in order to balance safety and efficiency, we set the collision penalty for QMDP to $-1.6$ and the collision penalty for SARSOP to $-30$. The position sensor uncertainty was set to $0.5 ~\si{\meter}$ and the velocity sensor uncertainty was set to $0.5 ~\si{\meter\per\second}$.
 
+After obtaining the approximately optimal QMDP and SARSOP policies shown in \Cref{fig:qmdp_sarsop_3}, we evaluated the policies in a higher-fidelity simulator with the time step decreased to $0.1 ~\si{\second}$ and the probability of generating a pedestrian at each time step of $0.01$. A random policy was evaluated alongside the QMDP and SARSOP policies. All three policies were compared on a metric of safety -- the collision rate -- and a metric of efficiency -- the time to cross. The random policy results were computed over 10,000 simulations, while the QMDP policy and SARSOP policy results we computed on 100 simulations, due to the increased computational cost of performing the belief update. The SARSOP scenario was not finished since the belief update for SARSOP takes much longer than for QMDP. The results reported in \cite{Bouton2018ScalableDriving} are reproduced alongside our results in \Cref{tab:results}.
+
 \begin{figure}[tbph]
     \centerline{
         \includegraphics[width=0.5\linewidth]{src/plots/qmdpSIM_0_00001_noise_05.png}
         \includegraphics[width=0.5\linewidth]{src/plots/sarsopSIM_0_01_1000_noise_05.png}
     }
-    \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. }
-    \label{fig:qmdp_sarsop_1}
+    \caption{Policy plots for the real-world occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$.}
+    \label{fig:qmdp_sarsop_3}
 \end{figure}
-
-After obtaining the approximately optimal QMDP and SARSOP policies, we evaluated the policies in a higher-fidelity simulator with the time step decreased to $0.1 ~\si{\second}$ and the probability of generating a pedestrian at each time step of $0.01$. A random policy was evaluated alongside the QMDP and SARSOP policies. All three policies were compared on a metric of safety -- the collision rate -- and a metric of efficiency -- time to cross. The random policy results were computed over 10,000 simulations, while the QMDP policy and SARSOP policy results we computed on 100 simulations, due to the increased computational cost of performing the belief update. The SARSOP scenario was not finished since the belief update for SARSOP takes much longer than for SARSOP. The results are given in \Cref{tab:results}.
 
 \begin{table}[tbhp]
     \caption{Results of Occluded Crosswalk Policies}
@@ -215,21 +215,21 @@ After obtaining the approximately optimal QMDP and SARSOP policies, we evaluated
             & \textbf{Collision rate} \hspace{3pt} & \textbf{Time to cross} \hspace{1pt} \\
             \hline
             \textit{\textbf{Reported}} & & \\
-            \textbf{Random} & $54.45 \pm 2.56\%$ & $12.03 \pm 10.66 ~\si{\second}$ \\
-            \textbf{QMDP}   & $0.00 \pm 0.00\%$  & $10.61 \pm 3.76 ~\si{\second}$ \\
-            \textbf{SARSOP} & $0.00 \pm 0.00\%$ & $10.51 \pm 4.44 ~\si{\second}$ \\
+            ~~\textbf{Random} & $54.45 \pm 2.56\%$ & $12.03 \pm 10.66 ~\si{\second}$ \\
+            ~~\textbf{QMDP}   & $0.00 \pm 0.00\%$  & $10.61 \pm 3.76 ~\si{\second}$ \\
+            ~~\textbf{SARSOP} & $0.00 \pm 0.00\%$ & $10.51 \pm 4.44 ~\si{\second}$ \\
             \hline
             \textit{\textbf{Our Results}} & & \\
-            \textbf{Random} & $18.65 \pm 38.95\%$ & $16.70 \pm 7.72 ~\si{\second}$ \\
-            \textbf{QMDP}   & $4.00 \pm 19.69\%$  & $5.34 \pm 0.98 ~\si{\second}$ \\
-            \textbf{SARSOP}\footnote{} & -- & -- \\
+            ~~\textbf{Random} & $18.65 \pm 38.95\%$ & $16.70 \pm 7.72 ~\si{\second}$ \\
+            ~~\textbf{QMDP}   & $4.00 \pm 19.69\%$  & $5.34 \pm 0.98 ~\si{\second}$ \\
+            ~~\textbf{SARSOP}\footnote{} & -- & -- \\
             \hline \hline
         \end{tabular}
         \label{tab:results}
     \end{center}
 \end{table}
 
-Despite the incomplete results, we can still see the improvement QMDP makes over a random policy, greatly reducing the collision rate and the time to cross. The QMDP policy is much more reliable than the random policy. We would expect that the SARSOP policy would outperform both the random and QMDP policies, though not by that much for the QMDP policy. The results reported in \cite{Bouton2018ScalableDriving}
+Despite the incomplete results, we can still see the improvement QMDP makes over a random policy, greatly reducing the collision rate and the time to cross. The QMDP policy is much more reliable than the random policy. We would expect that the SARSOP policy would outperform both the random and QMDP policies, though not by that much for the QMDP policy. The results reported in \cite{Bouton2018ScalableDriving} are close to our results, but not identical. We do not achieve the zero-collision-rate behavior of QMDP and SARSOP, likely due to differences in the many parameters governing the POMDP, but the trends show the expected behavior.
 
 
 \section{Conclusion}
@@ -238,6 +238,7 @@ Despite the incomplete results, we can still see the improvement QMDP makes over
 In this paper, we presented the problems facing autonomous driving in occluded urban scenarios. We reviewed literature over solving the single road user occluded crosswalk and occluded intersection problems and discussed some recent work on solving multiple road user occluded problems through utility fusion. We framed for the single user occluded crosswalk problem as a partially observable Markov decision process (POMDP) and presented QMDP and SARSOP as our two approaches for solving the POMDP. We were generally able to recreated the results in \cite{Bouton2018ScalableDriving}, which highlight the strengths of the POMDP representation and power of the SARSOP algorithm in maintaining performance in the face of significant uncertainty in the environment and sensors by efficiently planning in the reachable belief space. There is still work to be done in full recreating the results of \cite{Bouton2018ScalableDriving}, which is addressed in the following section.
 
 In the process of recreating these results, I learned a lot about \texttt{POMDPs.jl} and how to model autonomous driving as a POMDP, which will help me immensely in my future research.
+
 
 \section{Future Work}
 \label{sec:future-work}
@@ -253,5 +254,5 @@ It would also be interesting to see the performance of many of these policies in
 \bibliographystyle{IEEEtran}
 \bibliography{main}
 
-\end{document}
 
+\end{document}
