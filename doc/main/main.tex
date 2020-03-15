@@ -157,9 +157,7 @@ SARSOP, which stands for Successive Approximation of the Reachable Space under O
 \section{Experiments \& Results}
 \label{sec:experiments-results}
 
-We formulate the occluded crosswalk POMDP using a Julia package called \texttt{AutomotivePOMDPs.jl}\footnote{\texttt{https://github.com/sisl/AutomotivePOMDPs.jl}}, which is built on \texttt{POMDPs.jl} \cite{Egorov2017POMDPs.jl:Uncertainty}.
-
-A brief comparison of QMDP and SARSOP policies was conducted to demonstrate their differences. We analyzed the case of no sensor noise and examined the resulting policies, which are represented in \Cref{fig:qmdp_sarsop_1}\footnote{The SARSOP policy plots admittedly look different than the QMDP policy plots -- the plotting routines for these are different and I am still trying to fix them so they achieve identical behavior. The notional representation, however, is the same.}. The ego vehicle is initialized at $5 ~\si{\meter\per\second}$ and the pedestrian is initialized at $1 ~\si{\meter\per\second}$.
+We formulate the occluded crosswalk POMDP using a Julia package called \texttt{AutomotivePOMDPs.jl}\footnote{\texttt{https://github.com/sisl/AutomotivePOMDPs.jl}}, which is built on \texttt{POMDPs.jl} \cite{Egorov2017POMDPs.jl:Uncertainty}. In each of the following experiments, the time step was $0.5 ~\si{\second}$ and the probability of generating a pedestrian at each time step was $0.3$.
 
 \begin{figure}[tbph]
     \centerline{
@@ -169,10 +167,6 @@ A brief comparison of QMDP and SARSOP policies was conducted to demonstrate thei
     \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. There is no error in the sensing of the pedestrian's position and velocity.}
     \label{fig:qmdp_sarsop_1}
 \end{figure}
-
-The policies exhibit similar behavior, though the QMDP policy is more aggressive throughout, with aggressive braking for most of the ego vehicle's positions. The SARSOP policy appears similar, though the policy oddly switches to less aggressive braking as the ego approaches the pedestrian. This may be due to the $1000 ~\si{\second}$ time-out termination condition we set for SARSOP. The policies are topologically similar to those presented in \cite{Bouton2018ScalableDriving}.
-
-We also, analyzed the effect of sensor uncertainty in each POMDP solver to examine the robustness to uncertainty in the environment and the sensors, which is shown in \Cref{fig:qmdp_sarsop_2}.
 
 \begin{figure*}[htbp]
     \centerline{\textbf{QMDP Policies}}
@@ -192,10 +186,29 @@ We also, analyzed the effect of sensor uncertainty in each POMDP solver to exami
     \label{fig:qmdp_sarsop_2}
 \end{figure*}
 
+A brief comparison of QMDP and SARSOP policies was conducted to demonstrate their differences. We analyzed the case of no sensor noise and examined the resulting policies, which are represented in \Cref{fig:qmdp_sarsop_1}\footnote{The SARSOP policy plots admittedly look different than the QMDP policy plots -- the plotting routines for these were different when I generated them and I did not have time to re-run the script in order to make the formatting identical. The underlying notional policy representation, however, should be correct.}. The ego vehicle is initialized at $5 ~\si{\meter\per\second}$ and the pedestrian is initialized at $1 ~\si{\meter\per\second}$.
 
-Following the choices of the authors in \cite{Bouton2018ScalableDriving} in order to balance safety and efficiency, we set the collision penalty for QMDP to $-1.6$ and the collision penalty for SARSOP to $-30$. The position sensor uncertainty was set to $0.5 ~\si{\meter}$ and the velocity sensor uncertainty was set to $0.5 ~\si{\meter\per\second}$.
+The policies exhibit similar behavior, though the QMDP policy is more aggressive throughout, with aggressive braking for most of the ego vehicle's positions. The SARSOP policy appears similar, though the policy oddly switches to less aggressive braking as the ego approaches the pedestrian. This may be due to the $1000 ~\si{\second}$ time-out termination condition we set for SARSOP. The policies are topologically similar to those presented in \cite{Bouton2018ScalableDriving}.
 
-\begin{table}[htbp]
+We also analyzed the effect of sensor uncertainty in each POMDP solver to examine the robustness to uncertainty in the environment and the sensors, which is shown in \Cref{fig:qmdp_sarsop_2}.
+
+As the sensor uncertainty grows, the QMDP policy evolves to maintaining acceleration and eventually braking as it approaches the crosswalk, regardless of the position of the pedestrian. This is a poor policy since the ego vehicle essentially comes to a complete stop, whether or not the vehicle and pedestrian would actually collide. The SARSOP policy however, adapts to the uncertainty and is able to maintain most of the policy as acceleration when a collision with a pedestrian is not imminent. 
+These results show similar behavior to those presented in \cite{Bouton2018ScalableDriving}.
+
+The final experiments examine a real-world case. Following the choices of the authors in \cite{Bouton2018ScalableDriving}, in order to balance safety and efficiency, we set the collision penalty for QMDP to $-1.6$ and the collision penalty for SARSOP to $-30$. The position sensor uncertainty was set to $0.5 ~\si{\meter}$ and the velocity sensor uncertainty was set to $0.5 ~\si{\meter\per\second}$.
+
+\begin{figure}[tbph]
+    \centerline{
+        \includegraphics[width=0.5\linewidth]{src/plots/qmdpSIM_0_00001_noise_05.png}
+        \includegraphics[width=0.5\linewidth]{src/plots/sarsopSIM_0_01_1000_noise_05.png}
+    }
+    \caption{Policy plots for the occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$. }
+    \label{fig:qmdp_sarsop_1}
+\end{figure}
+
+After obtaining the approximately optimal QMDP and SARSOP policies, we evaluated the policies in a higher-fidelity simulator with the time step decreased to $0.1 ~\si{\second}$ and the probability of generating a pedestrian at each time step of $0.01$. A random policy was evaluated alongside the QMDP and SARSOP policies. All three policies were compared on a metric of safety -- the collision rate -- and a metric of efficiency -- time to cross. The results are given in \Cref{tab:results}.
+
+\begin{table}[tbhp]
     \caption{Results of Occluded Crosswalk Policies}
     \begin{center}
         \begin{tabular}{lrr}
@@ -207,7 +220,7 @@ Following the choices of the authors in \cite{Bouton2018ScalableDriving} in orde
             \textbf{SARSOP}\footnote{The SARSOP scenario were not finished since the belief update for SARSOP takes much longer than for SARSOP.} & -- & -- \\
             \hline \hline
         \end{tabular}
-        \label{tab1}
+        \label{tab:results}
     \end{center}
 \end{table}
 
@@ -218,7 +231,9 @@ discussion and comparison with the results in Bouton paper
 \section{Conclusion}
 \label{sec:conclusion}
 
-%In general a short summarizing paragraph will do, and under no circumstances should the paragraph simply repeat material from the Abstract or Introduction. In some cases it's possible to now make the original claims more concrete, e.g., by referring to quantitative performance results.
+In this paper, we presented the problems facing autonomous driving in occluded urban scenarios. We reviewed literature over solving the single road user occluded crosswalk and occluded intersection problems and discussed some recent work on solving multiple road user occluded problems through utility fusion. We framed for the single user occluded crosswalk problem as a partially observable Markov decision process (POMDP) and presented QMDP and SARSOP as our two approaches for solving the POMDP. We were generally able to recreated the results in \cite{Bouton2018ScalableDriving}, which highlight the strengths of the POMDP representation and power of the SARSOP algorithm in maintaining performance in the face of significant uncertainty in the environment and sensors by efficiently planning in the reachable belief space. There is still work to be done in full recreating the results of \cite{Bouton2018ScalableDriving}, which is addressed in the following section.
+
+In the process of recreating these results, I learned a lot about \texttt{POMDPs.jl} and how to model autonomous driving as a POMDP, which will help me immensely in my future research.
 
 \section{Future Work}
 \label{sec:future-work}
