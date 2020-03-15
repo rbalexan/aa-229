@@ -196,14 +196,14 @@ As the sensor uncertainty grows, the QMDP policy evolves to maintaining accelera
 
 The final experiments examine a real-world case. Following the choices of the authors in \cite{Bouton2018ScalableDriving}, in order to balance safety and efficiency, we set the collision penalty for QMDP to $-1.6$ and the collision penalty for SARSOP to $-30$. The position sensor uncertainty was set to $0.5 ~\si{\meter}$ and the velocity sensor uncertainty was set to $0.5 ~\si{\meter\per\second}$.
 
-After obtaining the approximately optimal QMDP and SARSOP policies shown in \Cref{fig:qmdp_sarsop_3}, we evaluated the policies in a higher-fidelity simulator with the time step decreased to $0.1 ~\si{\second}$ and the probability of generating a pedestrian at each time step of $0.01$. A random policy was evaluated alongside the QMDP and SARSOP policies. All three policies were compared on a metric of safety -- the collision rate -- and a metric of efficiency -- the time to cross. The random policy results were computed over 10,000 simulations, while the QMDP policy and SARSOP policy results we computed on 100 simulations, due to the increased computational cost of performing the belief update. The SARSOP scenario was not finished since the belief update for SARSOP takes much longer than for QMDP. The results reported in \cite{Bouton2018ScalableDriving} are reproduced alongside our results in \Cref{tab:results}.
+After obtaining the approximately optimal QMDP and SARSOP policies shown in \Cref{fig:qmdp_sarsop_3}\footnote{I tried to fix the SARSOP plotting to match the QMDP plotting, but it isn't quite fixed.}, we evaluated the policies in a higher-fidelity simulator with the time step decreased to $0.1 ~\si{\second}$ and the probability of generating a pedestrian at each time step of $0.01$. A random policy was evaluated alongside the QMDP and SARSOP policies. All three policies were compared on a metric of safety -- the collision rate -- and a metric of efficiency -- the time to cross. The random policy results were computed over 10,000 simulations, while the QMDP policy and SARSOP policy results we computed on 100 simulations, due to the increased computational cost of performing the belief update. The SARSOP scenario was not finished since the belief update for SARSOP takes much longer than for QMDP. The results reported in \cite{Bouton2018ScalableDriving} are reproduced alongside our results in \Cref{tab:results}.
 
 \begin{figure}[tbph]
     \centerline{
         \includegraphics[width=0.5\linewidth]{src/plots/qmdpSIM_0_00001_noise_05.png}
         \includegraphics[width=0.5\linewidth]{src/plots/sarsopSIM_0_01_1000_noise_05.png}
     }
-    \caption{Policy plots for the real-world occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$.\footnote{I tried to fix the SARSOP plotting to match the QMDP plotting, but it isn't quite fixed.}}
+    \caption{Policy plots for the real-world occluded crosswalk problem with the gradations representing accelerations in $\si{\meter\per\square\second}$.}
     \label{fig:qmdp_sarsop_3}
 \end{figure}
 
