@@ -198,7 +198,7 @@ function compute_acts3(pomdp::SingleOCPOMDP, policy::AlphaVectorPolicy, sig::Flo
     X = X[1:21]
     action_map = zeros(length(X), length(Y))
 
-    for (j, y) in enumerate(Y)
+    @showprogress for (j, y) in enumerate(Y)
         for (i, x) in enumerate(X)
             ego = AutomotivePOMDPs.xv_to_state(pomdp, x, v_ego)
             ped = AutomotivePOMDPs.yv_to_state(pomdp, y, v_ped)
@@ -216,6 +216,61 @@ end
 
 function policy_plot(pomdp::SingleOCPOMDP, policy::Policy, filename::String;
                      sig::Float64 = 0.01, v_ego::Float64 = 5., v_ped::Float64 = 1., n_bins::Int64 = 20, n_pts::Int64 = 100)
+
+    acts = compute_acts(pomdp, policy, sig, v_ego, v_ped, n_bins, n_pts)
+    #r = RGB{Float64}(1., 0., 0.) # red
+    #o = RGB{Float64}(1., 69/255.0, 0.) # orange
+    #y = RGB{Float64}(1., 1., 0.) # yellow
+    #g = RGB{Float64}(0., 1., 0.) # green
+    #colors = [r;o;y;g]
+    cmap = ColorMaps.RGBArrayMap(colormap("Blues"))
+    X, Y = get_XY_grid(pomdp::SingleOCPOMDP)
+    X = X[1:21]
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap),
+                xlabel = "Ego car position on the road",
+                ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * ".svg", ax)
+
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap))
+                #xlabel = "Ego car position on the road",
+                #ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * "_no_labels" * ".svg", ax)
+    return ax
+
+end
+
+function policy_plot1(pomdp::SingleOCPOMDP, policy::Policy, filename::String;
+                     sig::Float64 = 0.01, v_ego::Float64 = 5., v_ped::Float64 = 1., n_bins::Int64 = 20, n_pts::Int64 = 100)
+
+    acts = compute_acts(pomdp, policy, sig, v_ego, v_ped, n_bins, n_pts)
+    #r = RGB{Float64}(1., 0., 0.) # red
+    #o = RGB{Float64}(1., 69/255.0, 0.) # orange
+    #y = RGB{Float64}(1., 1., 0.) # yellow
+    #g = RGB{Float64}(0., 1., 0.) # green
+    #colors = [r;o;y;g]
+    cmap = ColorMaps.RGBArrayMap(colormap("Blues"))
+    X, Y = get_XY_grid(pomdp::SingleOCPOMDP)
+    X = X[1:21]
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap),
+                xlabel = "Ego car position on the road",
+                ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * ".svg", ax)
+
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap))
+                #xlabel = "Ego car position on the road",
+                #ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * "_no_labels" * ".svg", ax)
+    return ax
+
+end
+
+function policy_plot2(pomdp::SingleOCPOMDP, policy::Policy, filename::String;
+                     sig::Float64 = 0.01, v_ego::Float64 = 5., v_ped::Float64 = 1., n_bins::Int64 = 20, n_pts::Int64 = 100)
+
     acts = compute_acts2(pomdp, policy, sig, v_ego, v_ped, n_bins, n_pts)
     #r = RGB{Float64}(1., 0., 0.) # red
     #o = RGB{Float64}(1., 69/255.0, 0.) # orange
@@ -229,8 +284,42 @@ function policy_plot(pomdp::SingleOCPOMDP, policy::Policy, filename::String;
                 xlabel = "Ego car position on the road",
                 ylabel = "Pedestrian position along the crosswalk")#,
                 #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
-    save(filename, ax)
+    save(filename * ".svg", ax)
+
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap))
+                #xlabel = "Ego car position on the road",
+                #ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * "_no_labels" * ".svg", ax)
     return ax
+
+end
+
+function policy_plot3(pomdp::SingleOCPOMDP, policy::Policy, filename::String;
+                     sig::Float64 = 0.01, v_ego::Float64 = 5., v_ped::Float64 = 1., n_bins::Int64 = 20, n_pts::Int64 = 100)
+
+    acts = compute_acts3(pomdp, policy, sig, v_ego, v_ped, n_bins, n_pts)
+    #r = RGB{Float64}(1., 0., 0.) # red
+    #o = RGB{Float64}(1., 69/255.0, 0.) # orange
+    #y = RGB{Float64}(1., 1., 0.) # yellow
+    #g = RGB{Float64}(0., 1., 0.) # green
+    #colors = [r;o;y;g]
+    cmap = ColorMaps.RGBArrayMap(colormap("Blues"))
+    X, Y = get_XY_grid(pomdp::SingleOCPOMDP)
+    X = X[1:21]
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap),
+                xlabel = "Ego car position on the road",
+                ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * ".svg", ax)
+
+    ax = Axis(  Plots.Image(acts, (X[1], X[end]), (Y[1], Y[end]), colormap = cmap))
+                #xlabel = "Ego car position on the road",
+                #ylabel = "Pedestrian position along the crosswalk")#,
+                #title  = "Policy Plot for a fixed ego velocity at $v_ego m/s and fixed pedestrian speed at $v_ped m/s")
+    save(filename * "_no_labels" * ".svg", ax)
+    return ax
+
 end
 
 # function compute_acts(pomdp::SingleOCPOMDP, policy::NNPolicy, sig::Float64 = 0.01, v_ego::Float64 = 5., v_ped::Float64 = 1., n_bins::Int64 = 20, n_pts::Int64 = 100)
